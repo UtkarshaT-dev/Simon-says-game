@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simon Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="game-container">
+        <div class="settings-panel">
+            <div class="settings-row">
+                <div class="setting-item">
+                    <label for="difficulty">Difficulty:</label>
+                    <select id="difficulty" class="difficulty-select">
+                        <option value="easy">Easy</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label for="theme">Theme:</label>
+                    <select id="theme" class="difficulty-select">
+                        <option value="pink" selected>Pink Blush</option>
+                        <option value="ocean">Ocean Blue</option>
+                        <option value="sunset">Sunset Orange</option>
+                        <option value="forest">Forest Green</option>
+                        <option value="purple">Purple Dream</option>
+                        <option value="dark">Dark Mode</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <button class="icon-btn" id="soundToggle" title="Toggle Sound">
+                        <span id="soundIcon">🔊</span>
+                    </button>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="30" class="volume-slider" title="Volume">
+                    <span id="volumeValue">30%</span>
+                </div>
+                <div class="setting-item">
+                    <button class="icon-btn" id="statsBtn" title="View Statistics">📊</button>
+                    <button class="icon-btn" id="guideBtn" title="How to Play">❓</button>
+                    <button class="icon-btn" id="feedbackBtn" title="Send Feedback">💬</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="header">
+            <h1>Simon Game</h1>
+            <div class="score-display">
+                <span class="level-label">Level</span>
+                <span class="level-number" id="levelDisplay">0</span>
+            </div>
+        </div>
+        
+        <h2 id="statusText">Press Start to begin</h2>
+        
+        <div class="comment-box" id="commentBox">
+            <p id="commentText">Ready to play?</p>
+        </div>
+        
+        <div class="btn-container">
+            <div class="line-one">
+                <div class="btn red" type="button" id="red"></div>
+                <div class="btn yellow" type="button" id="yellow"></div>
+            </div>
+            <div class="circle-center"></div>
+            <div class="line-two">
+                <div class="btn green" type="button" id="green"></div>
+                <div class="btn purple" type="button" id="purple"></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn start-btn" id="startBtn">Start</button>
+            <button class="control-btn reset-btn" id="resetBtn">Reset</button>
+            <button class="control-btn resume-btn" id="resumeBtn" style="display: none;">Resume</button>
+        </div>
+
+        <div class="high-score">High Score: <span id="highScore">0</span></div>
+    </div>
+
+    <!-- Statistics Modal -->
+    <div class="modal" id="statsModal">
+        <div class="modal-content stats-modal">
+            <span class="close-btn" id="closeStats">&times;</span>
+            <div class="stats-header">
+                <h2>📊 Game Statistics</h2>
+                <p class="stats-subtitle">Track your progress and achievements</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-icon">🎮</div>
+                    <span class="stat-label">Games Played</span>
+                    <span class="stat-value" id="gamesPlayed">0</span>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">🏆</div>
+                    <span class="stat-label">Games Won</span>
+                    <span class="stat-value" id="gamesWon">0</span>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">💯</div>
+                    <span class="stat-label">Win Rate</span>
+                    <span class="stat-value" id="winRate">0%</span>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">⭐</div>
+                    <span class="stat-label">Average Score</span>
+                    <span class="stat-value" id="avgScore">0</span>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">🔥</div>
+                    <span class="stat-label">Best Streak</span>
+                    <span class="stat-value" id="bestStreak">0</span>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">🎯</div>
+                    <span class="stat-label">Total Patterns</span>
+                    <span class="stat-value" id="totalPatterns">0</span>
+                </div>
+            </div>
+            <button class="control-btn reset-btn stats-reset" id="resetStats">Reset Statistics</button>
+        </div>
+    </div>
+
+    <!-- How to Play Modal -->
+    <div class="modal" id="guideModal">
+        <div class="modal-content guide-modal">
+            <span class="close-btn" id="closeGuide">&times;</span>
+            <h2>🎮 How to Play Simon Game</h2>
+            <div class="guide-content">
+                <div class="guide-section">
+                    <h3>🎯 Objective</h3>
+                    <p>Remember and repeat the color sequence shown by the game. Each level adds one more color to the pattern!</p>
+                </div>
+
+                <div class="guide-section">
+                    <h3>📝 Game Rules</h3>
+                    <ol>
+                        <li>Click <strong>Start</strong> to begin the game</li>
+                        <li>Watch the colors light up in sequence</li>
+                        <li>Click the colors in the <strong>same order</strong></li>
+                        <li>Successfully complete the pattern to advance</li>
+                        <li>Each level adds one more color to remember</li>
+                        <li>One mistake ends the game!</li>
+                    </ol>
+                </div>
+
+                <div class="guide-section">
+                    <h3>🎚️ Difficulty Levels</h3>
+                    <ul>
+                        <li><strong>Easy:</strong> Slower pattern display (800ms between colors)</li>
+                        <li><strong>Medium:</strong> Normal speed (600ms between colors)</li>
+                        <li><strong>Hard:</strong> Fast pattern display (400ms between colors)</li>
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h3>🎵 Controls</h3>
+                    <ul>
+                        <li><strong>🔊 Sound Toggle:</strong> Turn sound on/off</li>
+                        <li><strong>🎚️ Volume Slider:</strong> Adjust sound volume</li>
+                        <li><strong>Reset:</strong> End current game and start fresh</li>
+                        <li><strong>Resume:</strong> Continue a saved game (appears if available)</li>
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h3>💡 Tips</h3>
+                    <ul>
+                        <li>Focus on the pattern - don't get distracted!</li>
+                        <li>Some players find it helpful to say the colors out loud</li>
+                        <li>Your game auto-saves after each level</li>
+                        <li>Try to beat your high score!</li>
+                        <li>Level 10+ counts as a win in statistics</li>
+                    </ul>
+                </div>
+
+                <div class="guide-section scoring">
+                    <h3>🏆 Scoring</h3>
+                    <p>Your score is the highest level reached. The game tracks your:</p>
+                    <ul>
+                        <li>High Score</li>
+                        <li>Win Rate (reaching level 10+)</li>
+                        <li>Best Streak (consecutive correct levels)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div class="modal" id="feedbackModal">
+        <div class="modal-content feedback-modal">
+            <span class="close-btn" id="closeFeedback">&times;</span>
+            <h2>💬 Contact & Feedback</h2>
+            <p class="feedback-subtitle">Have a question, found a bug, or want to suggest a feature? Send us a message!</p>
+            
+            <form id="feedbackForm" class="feedback-form">
+                <!-- Web3Forms Access Key - Get yours at https://web3forms.com -->
+                <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+                <input type="hidden" name="subject" value="Simon Game Feedback">
+                <input type="hidden" name="from_name" value="Simon Game">
+                
+                <div class="form-group">
+                    <label for="name">Name *</label>
+                    <input type="text" name="name" id="name" placeholder="Your name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" name="email" id="email" placeholder="your.email@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="feedbackType">Type *</label>
+                    <select name="type" id="feedbackType" required>
+                        <option value="">Select type...</option>
+                        <option value="Bug Report">🐛 Bug Report</option>
+                        <option value="Feature Request">💡 Feature Request</option>
+                        <option value="Question">❓ Question</option>
+                        <option value="Compliment">❤️ Compliment</option>
+                        <option value="Other">📝 Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message *</label>
+                    <textarea name="message" id="message" rows="5" placeholder="Tell us what you think..." maxlength="500" required></textarea>
+                    <div class="char-counter"><span id="charCount">0</span>/500 characters</div>
+                </div>
+
+                <!-- Hidden fields for game stats -->
+                <input type="hidden" name="high_score" id="hiddenHighScore">
+                <input type="hidden" name="games_played" id="hiddenGamesPlayed">
+                <input type="hidden" name="difficulty" id="hiddenDifficulty">
+
+                <div class="form-actions">
+                    <button type="submit" class="control-btn start-btn">Send Message</button>
+                    <button type="button" class="control-btn reset-btn" id="cancelFeedback">Cancel</button>
+                </div>
+            </form>
+
+            <div id="feedbackSuccess" class="feedback-success" style="display: none;">
+                <div class="success-icon">✓</div>
+                <h3>Message Sent!</h3>
+                <p>Thank you for your feedback. We'll get back to you soon!</p>
+            </div>
+
+            <div class="feedback-note">
+                <p>� <strong>Thank you for your feedback!</strong> We read every message and appreciate you taking the time to help us improve the Simon Game experience.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
